@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node exam.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Pavan",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.30.0"
+  }
 }
