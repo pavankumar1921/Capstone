@@ -1,31 +1,12 @@
 const express = require("express");
+const session = require("express-session");
+const csrf = require("tiny-csrf");
 const app = express();
-var csrf = require("tiny-csrf");
+
 const bodyParser = require("body-parser");
 var cookieParser = require("cookie-parser");
-const path = require("path");
-const {admin} =require("./models")
-app.set("views", path.join(__dirname, "views"));
-
-const passport = require("passport");
-const connectEnsureLogin = require("connect-ensure-login");
-const session = require("express-session");
-const flash = require("connect-flash");
-const LocalStrategy = require("passport-local");
-const bcrypt = require("bcrypt");
-
-const saltRounds = 10;
-app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser("shh! some secret string"));
-app.use(csrf({cookie:true}))
-// app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
-
-app.set("view engine", "ejs");
-app.use(flash());
-// eslint-disable-next-line no-undef
-app.use(express.static(path.join(__dirname, "public")));
-
 app.use(
   session({
     secret: "my-super-secret-key-21728173615375893",
@@ -36,6 +17,32 @@ app.use(
     },
   })
 );
+app.use(csrf("this_should_be_32_character_long", ["POST", "PUT", "DELETE"]));
+
+const path = require("path");
+const {admin} =require("./models")
+app.set("views", path.join(__dirname, "views"));
+
+const passport = require("passport");
+const connectEnsureLogin = require("connect-ensure-login");
+
+const flash = require("connect-flash");
+const LocalStrategy = require("passport-local");
+const bcrypt = require("bcrypt");
+
+const saltRounds = 10;
+app.use(bodyParser.json());
+
+
+
+
+app.set("view engine", "ejs");
+app.use(flash());
+// eslint-disable-next-line no-undef
+app.use(express.static(path.join(__dirname, "public")));
+app.set("views", path.join(__dirname, "views"));
+
+
 
 app.use(passport.initialize());
 app.use(passport.session());
